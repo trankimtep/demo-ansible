@@ -1,0 +1,2 @@
+grafana_download_url: https://dl.grafana.com/oss/release/grafana_{{ version_number }}_amd64.deb
+version_number: 8.4.3

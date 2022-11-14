@@ -1,0 +1,8 @@
+prometheus_download_url: https://github.com/prometheus/prometheus/releases/download/v{{ version_number }}-rc.1/prometheus-{{ version_number }}-rc.1.linux-amd64.tar.gz
+prometheus_download_file: /usr/share/prometheus/prometheus-{{ version_number }}-rc.1.linux-amd64.tar.gz
+prometheus_download_location: /usr/share/prometheus
+prometheus_bin_location: /usr/local/bin
+prometheus_dir: /etc/prometheus
+prometheus_lib_dir: /var/lib/prometheus
+prometheus_system_dir: /etc/systemd/system
+version_number: 2.34.0

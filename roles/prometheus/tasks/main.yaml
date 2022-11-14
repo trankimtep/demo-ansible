@@ -1,0 +1,97 @@
+  - name: add user "prometheus"
+    user: 
+      name: prometheus  
+      home: /usr/share/prometheus 
+    become: True
+
+  - name: Create /etc/prometheus directory
+    file:
+      path: "{{ prometheus_dir }}"
+      state: directory
+      owner: prometheus
+      group: prometheus
+    become: True
+
+  - name: Create /var/lib/prometheus directory
+    file:
+      path: "{{ prometheus_lib_dir }}"
+      state: directory
+      owner: prometheus
+      group: prometheus
+    become: yes
+
+  - name: Download prometheus
+    get_url:
+      url: "{{ prometheus_download_url }}"
+      dest: "{{ prometheus_download_file }}"
+    become: True
+
+  - name: Extract Prometheus archive
+    unarchive:
+      src: "{{ prometheus_download_file }}"
+      dest: "{{ prometheus_download_location }}"
+      owner: prometheus
+      group: prometheus
+      remote_src: yes
+      extra_opts: "--strip-components=1"
+    become: True
+
+  - name: Copy bin file 1
+    ansible.builtin.copy:
+      remote_src: yes
+      src: "{{ prometheus_download_location }}/prometheus"
+      dest: "{{prometheus_bin_location}}"
+      mode: a+x
+      owner: prometheus
+      group: prometheus
+    become: Yes
+    
+  - name: Copy bin file 2
+    ansible.builtin.copy:
+      remote_src: yes
+      src: "{{ prometheus_download_location }}/promtool"
+      dest: "{{prometheus_bin_location}}"
+      owner: prometheus
+      group: prometheus
+    become: Yes
+
+  - name: copy consoles directory
+    ansible.builtin.copy:
+      remote_src: yes
+      src: "{{ prometheus_download_location }}/consoles"
+      dest: "{{ prometheus_dir }}"
+      owner: prometheus
+      group: prometheus
+    become: yes
+
+  - name: copy consoles_lib directory
+    ansible.builtin.copy:
+      remote_src: yes 
+      src: "{{ prometheus_download_location }}/console_libraries"
+      dest: "{{ prometheus_dir }}"
+      owner: prometheus
+      group: prometheus
+    become: yes
+
+  - name: copy prometheus.yaml
+    ansible.builtin.copy:
+      src: templates/prometheus.yaml.j2
+      dest: "{{ prometheus_dir }}/prometheus.yaml"
+      owner: prometheus
+      group: prometheus
+    become: True
+
+  - name: Copy prometheus service file
+    template:
+      src: templates/prometheus.service.j2
+      dest: "{{ prometheus_system_dir }}/prometheus.service"
+    become: True
+
+  - name: Running Prometheus
+    service:
+      daemon_reload: yes
+      name: prometheus
+      state: started
+      enabled: yes
+    become: yes
+

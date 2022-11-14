@@ -1,0 +1,12 @@
+- hosts: server
+  remote_user: ubuntu
+  become_user: root
+  roles:
+    - prometheus
+    - grafana
+
+- hosts: client
+  remote_user: ubuntu
+  become_user: root
+  roles:
+    - node_exporter

@@ -1,0 +1,8 @@
+node_exporter_download_url: https://github.com/prometheus/node_exporter/releases/download/v{{ version_number }}/node_exporter-{{ version_number }}.linux-amd64.tar.gz
+node_exporter_download_location: /usr/share/node_exporter/node_exporter-{{ version_number }}.linux-amd64.tar.gz
+node_exporter_home_dir: /usr/share/node_exporter
+node_exporter_src_bin_file: /usr/share/node_exporter/node_exporter
+node_exporter_dest_bin_file: /usr/local/bin/node_exporter
+node_exporter_service_file: /etc/systemd/system/node_exporter.service
+node_exporter_service_template_file: templates/node_exporter.service.j2
+version_number: 1.3.1

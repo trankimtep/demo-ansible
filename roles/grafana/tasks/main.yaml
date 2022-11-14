@@ -1,0 +1,19 @@
+  - name: Install libfontconfig1
+    ansible.builtin.apt: 
+      name: libfontconfig1
+      update_cache: yes
+    become: true
+
+  - name: Download grafana
+    ansible.builtin.apt:
+      deb: "{{ grafana_download_url }}"
+      dpkg_options: 'force-confdef,force-confold'
+    become: true
+
+  - name: Run grafana
+    service:
+      daemon-reload: yes
+      name: grafana-server
+      state: started
+      enabled: yes
+    become: true
